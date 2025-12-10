@@ -8,37 +8,54 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- ESTILO (CSS) PARA FICAR COM CARA DE SITE PROFISSIONAL ---
+# --- CSS ANTI-BUG (CORRIGE O MODO ESCURO E BOTÕES) ---
 st.markdown("""
     <style>
+    /* 1. Força o fundo BRANCO */
     .stApp {
-        background-color: #FAFAFA;
+        background-color: #FFFFFF !important;
     }
-    .main-title {
-        color: #E63946; /* Vermelho bonito */
-        font-family: 'Helvetica', sans-serif;
-        text-align: center;
-        font-size: 3.5em;
-        font-weight: 800;
-        margin-bottom: 0px;
+    
+    /* 2. Força TODO texto a ser PRETO (Corrige o sumiço no iPhone) */
+    h1, h2, h3, h4, h5, h6, p, div, span, label {
+        color: #000000 !important;
     }
-    .sub-title {
-        color: #1D3557; /* Azul escuro */
-        text-align: center;
-        font-size: 1.2em;
-        margin-bottom: 30px;
-    }
+    
+    /* 3. Estilo dos Cards (As caixinhas brancas) */
     .card {
-        background-color: white;
+        background-color: #F0F2F6; /* Cinza clarinho pra destacar do fundo */
         padding: 20px;
         border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         margin-bottom: 20px;
         text-align: center;
+        border: 1px solid #E0E0E0;
     }
-    .highlight {
-        color: #E63946;
+    
+    /* 4. Título Principal Ajustado */
+    .main-title {
+        color: #E63946 !important; /* Vermelho */
+        font-family: 'Helvetica', sans-serif;
+        text-align: center;
+        font-size: 2.2em; 
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    
+    /* 5. Botões Grandes e Fáceis de Clicar */
+    .stButton button {
+        width: 100%;
+        height: 3.5em;
+        border-radius: 12px;
         font-weight: bold;
+        font-size: 18px;
+        border: 1px solid #ddd;
+        color: #333 !important; /* Texto do botão escuro */
+    }
+    /* Cor quando passa o mouse ou clica */
+    .stButton button:hover, .stButton button:active {
+        border-color: #E63946;
+        color: #E63946 !important;
+        background-color: #FFF5F5;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -50,7 +67,7 @@ if 'fase' not in st.session_state:
 def proxima_fase():
     st.session_state.fase += 1
     st.balloons()
-    time.sleep(1)
+    time.sleep(0.5)
     st.rerun()
 
 # =========================================================
@@ -58,89 +75,80 @@ def proxima_fase():
 # =========================================================
 if st.session_state.fase == 0:
     st.markdown("<h1 class='main-title'>Parabéns, Amor! ❤️</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='sub-title'>Um pequeno site feito só para a minha Pitucha.</p>", unsafe_allow_html=True)
     
+    # Imagem menorzinha para não ocupar a tela toda do celular
     st.image("https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", use_container_width=True)
     
-    st.write("---")
     st.markdown("""
-    <div style="text-align: center;">
-        <h3>Oi, meu amor!</h3>
-        <p>Hoje é seu dia e eu queria fazer algo diferente.</p>
-        <p>Para descobrir qual é o seu presente, você precisa provar que nossa história está gravada no coração.</p>
+    <div class='card'>
+        <p><strong>Oi, minha Pitucha!</strong></p>
+        <p>Preparei esse site especial para o seu dia.</p>
+        <p>Vamos ver se você está com a memória boa?</p>
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
-        if st.button("COMEÇAR O DESAFIO ✨", use_container_width=True):
-            proxima_fase()
+    if st.button("COMEÇAR O DESAFIO ✨"):
+        proxima_fase()
 
 # =========================================================
 # FASE 1: O DESTINO
 # =========================================================
 elif st.session_state.fase == 1:
     st.progress(33)
-    st.markdown("<div class='card'><h3>📍 Fase 1: A Linha do Tempo</h3></div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'><h3>📍 Onde a mágica aconteceu?</h3></div>", unsafe_allow_html=True)
     
-    st.write("Tudo começou lá atrás, em **2017**, no **Colégio Santo Inácio**.")
-    st.write("Eu já te achava a menina mais linda do 6º ano, mas a vida nos afastou por 4 anos...")
-    st.write("Até que o destino agiu.")
+    st.write("Começamos no **Santo Inácio (2017)**, ficamos 4 anos longe e nos reencontramos...")
+    st.info("Onde foi que eu te vi e decidi: **'Vou casar com ela'**?")
     
-    st.info("Onde foi nosso reencontro mágico, onde eu te vi e falei pra mim mesmo: **'Vou casar com ela'**?")
+    # BOTÕES NO LUGAR DE RADIO (Muito melhor pro celular)
+    if st.button("Na fila do mercado"):
+        st.error("Não... 😂")
     
-    resposta = st.radio("", ["Na fila do mercado", "Numa Festa Universitária", "No Tinder", "Na academia"])
-    
-    if st.button("Confirmar"):
-        if resposta == "Numa Festa Universitária":
-            st.success("Exato! Você estava linda demais. Ali eu tive certeza.")
-            time.sleep(2)
-            proxima_fase()
-        else:
-            st.error("Eita! Tenta de novo, Amor! 😂")
+    if st.button("Numa Festa Universitária"):
+        st.success("SIM! Ali eu tive certeza.")
+        time.sleep(1.5)
+        proxima_fase()
+        
+    if st.button("No Tinder"):
+        st.error("Errou! Tenta de novo.")
 
 # =========================================================
-# FASE 2: A ROTINA
+# FASE 2: A MANIA
 # =========================================================
 elif st.session_state.fase == 2:
     st.progress(66)
-    st.markdown("<div class='card'><h3>😂 Fase 2: Coisas de Pitucha</h3></div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'><h3>😂 Coisas de Iza</h3></div>", unsafe_allow_html=True)
     
-    st.write("A gente se diverte muito juntos, mas tem uma coisa específica que você faz que eu AMO ver.")
-    st.info("Qual é a mania da Iza que faz o Pitucho rir junto?")
+    st.write("Qual é a sua mania que eu mais amo e acho engraçada?")
     
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Mandar Reels e rir sozinha"):
-            st.toast("Isso é 100% você! 😂❤️")
-            time.sleep(1.5)
-            proxima_fase()
-    with col2:
-        if st.button("Dormir no meio do filme"):
-            st.error("Isso acontece também... mas não é a resposta certa kkk")
+    if st.button("Mandar Reels e rir sozinha"):
+        st.toast("Isso é muito você! 😂❤️")
+        time.sleep(1.5)
+        proxima_fase()
+        
+    if st.button("Dormir assistindo filme"):
+        st.error("Acontece, mas não é essa! kkk")
 
 # =========================================================
-# FASE 3: O FUTURO (SONHO)
+# FASE 3: O SONHO (TEXTO)
 # =========================================================
 elif st.session_state.fase == 3:
     st.progress(90)
-    st.markdown("<div class='card'><h3>👩‍⚕️ Fase Final: O Orgulho</h3></div>", unsafe_allow_html=True)
+    st.markdown("<div class='card'><h3>👩‍⚕️ O Orgulho</h3></div>", unsafe_allow_html=True)
     
-    st.write("Eu admiro muito a mulher que você está se tornando.")
-    st.write("Essa pergunta é sobre o futuro brilhante que te espera.")
+    st.write("Qual é o maior sonho profissional da Iza?")
     
-    st.text_input("Qual é o maior sonho profissional da Iza?", key="sonho_iza")
+    # Input de texto continua igual
+    sonho = st.text_input("Escreva aqui:", key="sonho_iza")
     
-    if st.button("Responder"):
-        texto = st.session_state.sonho_iza.lower()
-        # Aceita variações da resposta
+    if st.button("ENVIAR RESPOSTA"):
+        texto = sonho.lower()
         if "neuro" in texto or "médica" in texto or "medica" in texto:
-            st.success("SIM! E você será a melhor Neurologista desse mundo.")
-            st.write("Eu vou estar lá na primeira fila te aplaudindo.")
-            time.sleep(3)
+            st.success("A Melhor Neurologista do Mundo! 🧠")
+            time.sleep(2)
             proxima_fase()
         else:
-            st.warning("Dica: Tem a ver com medicina e ser a melhor especialista em cérebros! Tente 'Neurologista'.")
+            st.warning("Dica: Tem a ver com medicina e cérebros! Tente 'Neurologista'.")
 
 # =========================================================
 # FINAL: O CONVITE
@@ -149,34 +157,30 @@ elif st.session_state.fase == 4:
     st.progress(100)
     st.balloons()
     
-    st.markdown("<h1 class='main-title'>PARABÉNS, AMOR! 🎉</h1>", unsafe_allow_html=True)
-    st.image("https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif", width=250)
+    st.markdown("<h1 class='main-title'>PARABÉNS! 🎉</h1>", unsafe_allow_html=True)
+    st.image("https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif", use_container_width=True)
     
     st.markdown("""
     <div class='card'>
-        <p>Você acertou tudo. Você é a mulher da minha vida.</p>
-        <p>Como presente, quero te levar para uma experiência especial.</p>
+        <p>Você acertou tudo. Te amo!</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.write("---")
-    
-    # --- CARTÃO DO CONVITE ---
+    # CONVITE
     st.markdown("""
-    <div style="background-color: #fff3cd; padding: 20px; border-radius: 10px; border: 2px dashed #dba900;">
-        <h2 style="color: #856404; text-align: center;">☕ CONVITE ESPECIAL</h2>
-        <p><strong>Onde:</strong> [Holandesa]</p>
-        <p><strong>Quando:</strong> Sexta-feira (Seu Aniversário)</p>
-        <p><strong>Traje:</strong> Linda como sempre</p>
-        <p><strong>Missão:</strong> Tomar o melhor café da cidade com seu Pitucho.</p>
+    <div style="background-color: #fff3cd; padding: 15px; border-radius: 10px; border: 2px dashed #dba900; color: #000;">
+        <h3 style="color: #856404; margin:0;">☕ CONVITE OFICIAL</h3>
+        <hr>
+        <p><strong>Local:</strong> [HOLANDESA]</p>
+        <p><strong>Dia:</strong> Sexta-feira</p>
+        <p><strong>Missão:</strong> Café especial com o Pitucho</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.write("")
     
-    # BOTÃO DO MAPA
-    # Substitua o link abaixo pelo link real do Google Maps ou Instagram
-    st.link_button("📍 Ver Localização", "https://www.instagram.com/holandesapanificadora?igsh=MTl0NmNibXlkMWV3eQ==") 
+    # Substitua o link aqui
+    st.link_button("📍 VER LOCALIZAÇÃO", "https://www.instagram.com/holandesapanificadora?igsh=MTl0NmNibXlkMWV3eQ==", use_container_width=True)
     
     st.write("")
-    st.markdown("<h3 style='text-align: center;'>Te amo muito! ❤️</h3>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: center; color: #E63946;'>Seu Pitucho ❤️</h4>", unsafe_allow_html=True)
