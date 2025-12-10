@@ -3,7 +3,7 @@ import time
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
-    page_title="Feliz Aniversário, Iza!",
+    page_title="Feliz Aniversário, Amor!",
     page_icon="❤️",
     layout="centered"
 )
@@ -57,7 +57,7 @@ def proxima_fase():
 # TELA INICIAL
 # =========================================================
 if st.session_state.fase == 0:
-    st.markdown("<h1 class='main-title'>Parabéns, Iza! ❤️</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='main-title'>Parabéns, Amor! ❤️</h1>", unsafe_allow_html=True)
     st.markdown("<p class='sub-title'>Um pequeno site feito só para a minha Pitucha.</p>", unsafe_allow_html=True)
     
     st.image("https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", use_container_width=True)
@@ -97,7 +97,7 @@ elif st.session_state.fase == 1:
             time.sleep(2)
             proxima_fase()
         else:
-            st.error("Eita! Tenta de novo, Iza! 😂")
+            st.error("Eita! Tenta de novo, Amor! 😂")
 
 # =========================================================
 # FASE 2: A ROTINA
